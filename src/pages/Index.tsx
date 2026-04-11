@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { MessageSquare, Search, LogOut } from "lucide-react";
+import { Link } from "react-router-dom";
+import { MessageSquare, Search, LogOut, User } from "lucide-react";
 import ConfessionForm from "@/components/ConfessionForm";
 import ConfessionCard from "@/components/ConfessionCard";
 import {
@@ -61,14 +62,23 @@ export default function Index() {
         <p className="mt-2 text-sm text-muted-foreground">
           anonymous · numbered · unfiltered
         </p>
-        <button
-          onClick={logout}
-          className="mx-auto mt-3 flex items-center gap-1.5 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <LogOut className="h-3 w-3" />
-          log out
-        </button>
-      </div>
+        <div className="mx-auto mt-3 flex items-center justify-center gap-3">
+          <Link
+            to="/dashboard"
+            className="flex items-center gap-1.5 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <User className="h-3 w-3" />
+            my confessions
+          </Link>
+          <span className="text-[11px] text-muted-foreground/40">·</span>
+          <button
+            onClick={logout}
+            className="flex items-center gap-1.5 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <LogOut className="h-3 w-3" />
+            log out
+          </button>
+        </div>
 
       {/* Form */}
       <div className="mb-10">
