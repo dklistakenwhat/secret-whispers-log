@@ -29,10 +29,10 @@ Deno.serve(async (req) => {
       !display_name ||
       typeof display_name !== "string" ||
       display_name.trim().length < 1 ||
-      display_name.trim().length > 20
+      display_name.trim().length > 40
     ) {
       return new Response(
-        JSON.stringify({ error: "Name must be 1-20 characters" }),
+        JSON.stringify({ error: "Name must be 1-40 characters" }),
         { status: 400, headers: { ..._corsHeaders, "Content-Type": "application/json" } }
       );
     }
