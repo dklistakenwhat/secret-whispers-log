@@ -9,6 +9,7 @@ import NamePrompt from "@/components/NamePrompt";
 import Index from "./pages/Index.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import AdminReports from "./pages/AdminReports.tsx";
+import AdminPanel from "./pages/AdminPanel.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
