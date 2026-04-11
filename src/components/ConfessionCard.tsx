@@ -9,7 +9,7 @@ interface Props {
   liked?: boolean;
 }
 
-export default function ConfessionCard({ confession, onLike, isMine }: Props) {
+export default function ConfessionCard({ confession, onLike, isMine, liked }: Props) {
   const date = new Date(confession.created_at);
   const formattedDate = date.toLocaleDateString("en-US", {
     month: "short",
@@ -43,9 +43,13 @@ export default function ConfessionCard({ confession, onLike, isMine }: Props) {
         <span className="text-[11px] text-confession-number">{formattedDate}</span>
         <button
           onClick={() => onLike(confession.id)}
-          className="flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+          className={`flex items-center gap-1.5 text-xs transition-colors ${
+            liked
+              ? "text-red-500"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
         >
-          <Heart className="h-3.5 w-3.5" />
+          <Heart className={`h-3.5 w-3.5 ${liked ? "fill-current" : ""}`} />
           {confession.likes > 0 && <span>{confession.likes}</span>}
         </button>
       </div>
