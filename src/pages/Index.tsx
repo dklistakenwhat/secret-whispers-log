@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { MessageSquare, Search } from "lucide-react";
+import { MessageSquare, Search, LogOut } from "lucide-react";
 import ConfessionForm from "@/components/ConfessionForm";
 import ConfessionCard from "@/components/ConfessionCard";
 import {
@@ -8,8 +8,10 @@ import {
   likeConfession,
   Confession,
 } from "@/lib/confessions";
+import { useVisitor } from "@/contexts/VisitorContext";
 
 export default function Index() {
+  const { visitor, logout } = useVisitor();
   const [confessions, setConfessions] = useState<Confession[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -25,7 +27,7 @@ export default function Index() {
   }, [refresh]);
 
   const handleSubmit = async (text: string) => {
-    await addConfession(text);
+    await addConfession(text, visitor?.id);
     refresh();
   };
 
@@ -59,6 +61,13 @@ export default function Index() {
         <p className="mt-2 text-sm text-muted-foreground">
           anonymous · numbered · unfiltered
         </p>
+        <button
+          onClick={logout}
+          className="mx-auto mt-3 flex items-center gap-1.5 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <LogOut className="h-3 w-3" />
+          log out
+        </button>
       </div>
 
       {/* Form */}
@@ -99,7 +108,12 @@ export default function Index() {
       ) : (
         <div className="grid gap-3 sm:grid-cols-2">
           {filtered.map((c) => (
-            <ConfessionCard key={c.id} confession={c} onLike={handleLike} />
+            <ConfessionCard
+              key={c.id}
+              confession={c}
+              onLike={handleLike}
+              isMine={c.visitor_id === visitor?.id}
+            />
           ))}
         </div>
       )}
