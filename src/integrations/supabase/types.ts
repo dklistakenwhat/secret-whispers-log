@@ -21,6 +21,7 @@ export type Database = {
           id: string
           likes: number
           text: string
+          visitor_id: string | null
         }
         Insert: {
           confession_number?: number
@@ -28,6 +29,7 @@ export type Database = {
           id?: string
           likes?: number
           text: string
+          visitor_id?: string | null
         }
         Update: {
           confession_number?: number
@@ -35,6 +37,36 @@ export type Database = {
           id?: string
           likes?: number
           text?: string
+          visitor_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "confessions_visitor_id_fkey"
+            columns: ["visitor_id"]
+            isOneToOne: false
+            referencedRelation: "visitors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      visitors: {
+        Row: {
+          created_at: string
+          display_name: string
+          id: string
+          ip_address: string
+        }
+        Insert: {
+          created_at?: string
+          display_name: string
+          id?: string
+          ip_address: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string
+          id?: string
+          ip_address?: string
         }
         Relationships: []
       }

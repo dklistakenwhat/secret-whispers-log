@@ -5,9 +5,10 @@ import { Confession } from "@/lib/confessions";
 interface Props {
   confession: Confession;
   onLike: (id: string) => void;
+  isMine?: boolean;
 }
 
-export default function ConfessionCard({ confession, onLike }: Props) {
+export default function ConfessionCard({ confession, onLike, isMine }: Props) {
   const date = new Date(confession.created_at);
   const formattedDate = date.toLocaleDateString("en-US", {
     month: "short",
@@ -27,7 +28,12 @@ export default function ConfessionCard({ confession, onLike }: Props) {
         <span className="font-heading text-base font-bold text-foreground">
           #{confession.confession_number}
         </span>
-        <span className="text-xs text-muted-foreground">{timeAgo}</span>
+        <div className="flex items-center gap-2">
+          {isMine && (
+            <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/40" title="" />
+          )}
+          <span className="text-xs text-muted-foreground">{timeAgo}</span>
+        </div>
       </div>
       <p className="mb-4 text-sm leading-relaxed text-card-foreground">
         {confession.text}
