@@ -62,8 +62,10 @@ export function VisitorProvider({ children }: { children: ReactNode }) {
     sessionStorage.removeItem("visitor");
   };
 
+  const isAdmin = visitor?.display_name === ADMIN_NAME;
+
   return (
-    <VisitorContext.Provider value={{ visitor, loading, login, logout }}>
+    <VisitorContext.Provider value={{ visitor, loading, isAdmin, login, logout }}>
       {children}
     </VisitorContext.Provider>
   );
