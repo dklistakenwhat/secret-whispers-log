@@ -1,6 +1,7 @@
 import { Heart } from "lucide-react";
 import { motion } from "framer-motion";
 import { Confession } from "@/lib/confessions";
+import ReportDialog from "@/components/ReportDialog";
 
 interface Props {
   confession: Confession;
@@ -41,17 +42,20 @@ export default function ConfessionCard({ confession, onLike, isMine, liked }: Pr
       </p>
       <div className="flex items-center justify-between">
         <span className="text-[11px] text-confession-number">{formattedDate}</span>
-        <button
-          onClick={() => onLike(confession.id)}
-          className={`flex items-center gap-1.5 text-xs transition-colors ${
-            liked
-              ? "text-red-500"
-              : "text-muted-foreground hover:text-foreground"
-          }`}
-        >
-          <Heart className={`h-3.5 w-3.5 ${liked ? "fill-current" : ""}`} />
-          {confession.likes > 0 && <span>{confession.likes}</span>}
-        </button>
+        <div className="flex items-center gap-3">
+          <ReportDialog confessionId={confession.id} />
+          <button
+            onClick={() => onLike(confession.id)}
+            className={`flex items-center gap-1.5 text-xs transition-colors ${
+              liked
+                ? "text-red-500"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Heart className={`h-3.5 w-3.5 ${liked ? "fill-current" : ""}`} />
+            {confession.likes > 0 && <span>{confession.likes}</span>}
+          </button>
+        </div>
       </div>
     </motion.div>
   );

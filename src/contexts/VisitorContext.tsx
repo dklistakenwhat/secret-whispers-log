@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
+const ADMIN_NAME = "D.L.L.Mconfessionable";
+
 interface Visitor {
   id: string;
   display_name: string;
@@ -9,6 +11,7 @@ interface Visitor {
 interface VisitorContextType {
   visitor: Visitor | null;
   loading: boolean;
+  isAdmin: boolean;
   login: (name: string) => Promise<boolean>;
   logout: () => void;
 }
@@ -16,6 +19,7 @@ interface VisitorContextType {
 const VisitorContext = createContext<VisitorContextType>({
   visitor: null,
   loading: true,
+  isAdmin: false,
   login: async () => false,
   logout: () => {},
 });
@@ -58,8 +62,10 @@ export function VisitorProvider({ children }: { children: ReactNode }) {
     sessionStorage.removeItem("visitor");
   };
 
+  const isAdmin = visitor?.display_name === ADMIN_NAME;
+
   return (
-    <VisitorContext.Provider value={{ visitor, loading, login, logout }}>
+    <VisitorContext.Provider value={{ visitor, loading, isAdmin, login, logout }}>
       {children}
     </VisitorContext.Provider>
   );

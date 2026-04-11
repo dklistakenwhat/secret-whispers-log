@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { MessageSquare, Search, LogOut, User } from "lucide-react";
+import { MessageSquare, Search, LogOut, User, Shield } from "lucide-react";
 import ConfessionForm from "@/components/ConfessionForm";
 import ConfessionCard from "@/components/ConfessionCard";
 import {
@@ -13,7 +13,7 @@ import {
 import { useVisitor } from "@/contexts/VisitorContext";
 
 export default function Index() {
-  const { visitor, logout } = useVisitor();
+  const { visitor, logout, isAdmin } = useVisitor();
   const [confessions, setConfessions] = useState<Confession[]>([]);
   const [likedIds, setLikedIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
@@ -77,6 +77,18 @@ export default function Index() {
             <User className="h-3 w-3" />
             my confessions
           </Link>
+          {isAdmin && (
+            <>
+              <span className="text-[11px] text-muted-foreground/40">·</span>
+              <Link
+                to="/admin/reports"
+                className="flex items-center gap-1.5 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <Shield className="h-3 w-3" />
+                reports
+              </Link>
+            </>
+          )}
           <span className="text-[11px] text-muted-foreground/40">·</span>
           <button
             onClick={logout}
