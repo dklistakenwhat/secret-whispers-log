@@ -1,4 +1,4 @@
-import { Heart } from "lucide-react";
+import { Heart, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Confession } from "@/lib/confessions";
 import ReportDialog from "@/components/ReportDialog";
@@ -7,11 +7,12 @@ interface Props {
   confession: Confession;
   displayNumber?: number;
   onLike: (id: string) => void;
+  onDelete?: (id: string) => void;
   isMine?: boolean;
   liked?: boolean;
 }
 
-export default function ConfessionCard({ confession, displayNumber, onLike, isMine, liked }: Props) {
+export default function ConfessionCard({ confession, displayNumber, onLike, onDelete, isMine, liked }: Props) {
   const date = new Date(confession.created_at);
   const formattedDate = date.toLocaleDateString("en-US", {
     month: "short",
@@ -45,6 +46,14 @@ export default function ConfessionCard({ confession, displayNumber, onLike, isMi
         <span className="text-[11px] text-confession-number">{formattedDate}</span>
         <div className="flex items-center gap-3">
           <ReportDialog confessionId={confession.id} />
+          {isMine && onDelete && (
+            <button
+              onClick={() => onDelete(confession.id)}
+              className="flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-destructive"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+            </button>
+          )}
           <button
             onClick={() => onLike(confession.id)}
             className={`flex items-center gap-1.5 text-xs transition-colors ${
