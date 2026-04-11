@@ -44,6 +44,16 @@ export default function Index() {
     refresh();
   };
 
+  // Assign sequential display numbers: oldest confession = #1
+  const displayNumbers = useMemo(() => {
+    const map = new Map<string, number>();
+    // confessions are sorted newest-first, so reverse for numbering
+    confessions.forEach((c, i) => {
+      map.set(c.id, confessions.length - i);
+    });
+    return map;
+  }, [confessions]);
+
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return confessions;
@@ -51,10 +61,10 @@ export default function Index() {
     const numMatch = q.match(/^#?(\d+)$/);
     if (numMatch) {
       const num = parseInt(numMatch[1], 10);
-      return confessions.filter((c) => c.confession_number === num);
+      return confessions.filter((c) => displayNumbers.get(c.id) === num);
     }
     return confessions.filter((c) => c.text.toLowerCase().includes(q));
-  }, [confessions, search]);
+  }, [confessions, search, displayNumbers]);
 
   return (
     <div className="mx-auto min-h-screen max-w-3xl px-4 py-12 sm:px-6">
@@ -141,6 +151,7 @@ export default function Index() {
             <ConfessionCard
               key={c.id}
               confession={c}
+              displayNumber={displayNumbers.get(c.id)}
               onLike={handleLike}
               isMine={c.visitor_id === visitor?.id}
               liked={likedIds.has(c.id)}
