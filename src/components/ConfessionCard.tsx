@@ -5,12 +5,13 @@ import ReportDialog from "@/components/ReportDialog";
 
 interface Props {
   confession: Confession;
+  displayNumber?: number;
   onLike: (id: string) => void;
   isMine?: boolean;
   liked?: boolean;
 }
 
-export default function ConfessionCard({ confession, onLike, isMine, liked }: Props) {
+export default function ConfessionCard({ confession, displayNumber, onLike, isMine, liked }: Props) {
   const date = new Date(confession.created_at);
   const formattedDate = date.toLocaleDateString("en-US", {
     month: "short",
@@ -28,7 +29,7 @@ export default function ConfessionCard({ confession, onLike, isMine, liked }: Pr
     >
       <div className="mb-3 flex items-center justify-between">
         <span className="font-heading text-base font-bold text-foreground">
-          #{confession.confession_number}
+          #{displayNumber ?? confession.confession_number}
         </span>
         <div className="flex items-center gap-2">
           {isMine && (
