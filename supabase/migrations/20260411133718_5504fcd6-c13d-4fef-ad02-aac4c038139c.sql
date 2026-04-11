@@ -1,0 +1,1 @@
+DROP POLICY "Anyone can read visitors" ON public.visitors;
