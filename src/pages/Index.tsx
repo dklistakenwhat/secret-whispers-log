@@ -64,7 +64,7 @@ export default function Index() {
           <img src="/logo.png" alt="confessionable" className="h-16 w-16 object-cover rounded-full" />
         </div>
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          confessionable
+          confessions
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
           anonymous · numbered · unfiltered
