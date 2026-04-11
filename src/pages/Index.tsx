@@ -6,6 +6,7 @@ import ConfessionCard from "@/components/ConfessionCard";
 import {
   getConfessions,
   addConfession,
+  deleteConfession,
   toggleLikeConfession,
   getMyLikes,
   Confession,
@@ -41,6 +42,11 @@ export default function Index() {
   const handleLike = async (id: string) => {
     if (!visitor) return;
     await toggleLikeConfession(id, visitor.id);
+    refresh();
+  };
+
+  const handleDelete = async (id: string) => {
+    await deleteConfession(id);
     refresh();
   };
 
@@ -161,6 +167,7 @@ export default function Index() {
               confession={c}
               displayNumber={displayNumbers.get(c.id)}
               onLike={handleLike}
+              onDelete={handleDelete}
               isMine={c.visitor_id === visitor?.id}
               liked={likedIds.has(c.id)}
             />
