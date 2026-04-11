@@ -7,6 +7,7 @@ import AgeGate from "@/components/AgeGate";
 import { VisitorProvider, useVisitor } from "@/contexts/VisitorContext";
 import NamePrompt from "@/components/NamePrompt";
 import Index from "./pages/Index.tsx";
+import Dashboard from "./pages/Dashboard.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -21,7 +22,7 @@ function AppContent() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Index />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );
