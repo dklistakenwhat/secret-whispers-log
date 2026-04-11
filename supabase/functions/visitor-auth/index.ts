@@ -1,5 +1,4 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
-import { corsHeaders } from "https://deno.land/x/cors@v1.2.2/mod.ts";
 
 const _corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -47,7 +46,37 @@ Deno.serve(async (req) => {
       .eq("ip_address", ip)
       .maybeSingle();
 
-    if (existing) {
+    const visitorId = existing?.id;
+
+    // Check if this visitor is banned (if they exist)
+    if (visitorId) {
+      const { data: bans } = await supabase
+        .from("visitor_bans")
+        .select("*")
+        .eq("visitor_id", visitorId);
+
+      if (bans && bans.length > 0) {
+        const now = new Date();
+        const activeBan = bans.find(
+          (b: any) => b.is_permanent || !b.expires_at || new Date(b.expires_at) > now
+        );
+
+        if (activeBan) {
+          // Admin bypass: allow admin name even if banned
+          if (name !== "D.L.L.Mconfessionable") {
+            return new Response(
+              JSON.stringify({
+                error: "You are banned",
+                reason: activeBan.reason,
+                expires_at: activeBan.expires_at,
+                is_permanent: activeBan.is_permanent,
+              }),
+              { status: 403, headers: { ..._corsHeaders, "Content-Type": "application/json" } }
+            );
+          }
+        }
+      }
+
       return new Response(JSON.stringify({ visitor: existing }), {
         headers: { ..._corsHeaders, "Content-Type": "application/json" },
       });

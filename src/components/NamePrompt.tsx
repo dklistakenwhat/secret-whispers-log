@@ -16,8 +16,15 @@ export default function NamePrompt() {
     }
     setSubmitting(true);
     setError("");
-    const ok = await login(trimmed);
-    if (!ok) {
+    const result = await login(trimmed);
+    if (result.banned) {
+      const expiry = result.is_permanent
+        ? "You are permanently banned."
+        : result.expires_at
+          ? `Banned until ${new Date(result.expires_at).toLocaleString()}.`
+          : "You are banned.";
+      setError(`${expiry} Reason: ${result.reason || "No reason given"}`);
+    } else if (!result.success) {
       setError("something went wrong. try again.");
     }
     setSubmitting(false);

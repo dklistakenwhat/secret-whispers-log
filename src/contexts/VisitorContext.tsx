@@ -8,11 +8,19 @@ interface Visitor {
   display_name: string;
 }
 
+interface LoginResult {
+  success: boolean;
+  banned?: boolean;
+  reason?: string;
+  expires_at?: string;
+  is_permanent?: boolean;
+}
+
 interface VisitorContextType {
   visitor: Visitor | null;
   loading: boolean;
   isAdmin: boolean;
-  login: (name: string) => Promise<boolean>;
+  login: (name: string) => Promise<LoginResult>;
   logout: () => void;
 }
 
@@ -20,7 +28,7 @@ const VisitorContext = createContext<VisitorContextType>({
   visitor: null,
   loading: true,
   isAdmin: false,
-  login: async () => false,
+  login: async () => ({ success: false }),
   logout: () => {},
 });
 
@@ -42,18 +50,30 @@ export function VisitorProvider({ children }: { children: ReactNode }) {
     setLoading(false);
   }, []);
 
-  const login = async (name: string): Promise<boolean> => {
+  const login = async (name: string): Promise<LoginResult> => {
     try {
-      const { data, error } = await supabase.functions.invoke("visitor-auth", {
+      const response = await supabase.functions.invoke("visitor-auth", {
         body: { display_name: name },
       });
-      if (error || !data?.visitor) return false;
-      const v = { id: data.visitor.id, display_name: data.visitor.display_name };
+      
+      // Check for ban (403)
+      if (response.data?.error === "You are banned") {
+        return {
+          success: false,
+          banned: true,
+          reason: response.data.reason,
+          expires_at: response.data.expires_at,
+          is_permanent: response.data.is_permanent,
+        };
+      }
+      
+      if (response.error || !response.data?.visitor) return { success: false };
+      const v = { id: response.data.visitor.id, display_name: response.data.visitor.display_name };
       setVisitor(v);
       sessionStorage.setItem("visitor", JSON.stringify(v));
-      return true;
+      return { success: true };
     } catch {
-      return false;
+      return { success: false };
     }
   };
 

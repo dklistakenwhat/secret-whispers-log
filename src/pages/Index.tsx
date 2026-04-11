@@ -97,6 +97,14 @@ export default function Index() {
                 <Shield className="h-3 w-3" />
                 reports
               </Link>
+              <span className="text-[11px] text-muted-foreground/40">·</span>
+              <Link
+                to="/admin/panel"
+                className="flex items-center gap-1.5 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <Shield className="h-3 w-3" />
+                admin panel
+              </Link>
             </>
           )}
           <span className="text-[11px] text-muted-foreground/40">·</span>
