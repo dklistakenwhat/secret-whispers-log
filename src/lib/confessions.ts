@@ -20,12 +20,9 @@ export async function getConfessions(): Promise<Confession[]> {
 }
 
 export async function addConfession(text: string, visitorId?: string): Promise<Confession> {
-  const row: Record<string, unknown> = { text };
-  if (visitorId) row.visitor_id = visitorId;
-
   const { data, error } = await supabase
     .from("confessions")
-    .insert(row)
+    .insert({ text, visitor_id: visitorId ?? null })
     .select()
     .single();
 
