@@ -88,6 +88,48 @@ export type Database = {
           },
         ]
       }
+      reports: {
+        Row: {
+          confession_id: string
+          created_at: string
+          id: string
+          reason: string
+          resolved: boolean
+          visitor_id: string
+        }
+        Insert: {
+          confession_id: string
+          created_at?: string
+          id?: string
+          reason: string
+          resolved?: boolean
+          visitor_id: string
+        }
+        Update: {
+          confession_id?: string
+          created_at?: string
+          id?: string
+          reason?: string
+          resolved?: boolean
+          visitor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reports_confession_id_fkey"
+            columns: ["confession_id"]
+            isOneToOne: false
+            referencedRelation: "confessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_visitor_id_fkey"
+            columns: ["visitor_id"]
+            isOneToOne: false
+            referencedRelation: "visitors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       visitors: {
         Row: {
           created_at: string
