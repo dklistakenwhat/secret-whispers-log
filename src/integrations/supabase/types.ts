@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           confession_number: number
           created_at: string
+          hidden: boolean
           id: string
           likes: number
           text: string
@@ -26,6 +27,7 @@ export type Database = {
         Insert: {
           confession_number?: number
           created_at?: string
+          hidden?: boolean
           id?: string
           likes?: number
           text: string
@@ -34,6 +36,7 @@ export type Database = {
         Update: {
           confession_number?: number
           created_at?: string
+          hidden?: boolean
           id?: string
           likes?: number
           text?: string
