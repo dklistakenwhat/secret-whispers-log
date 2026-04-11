@@ -215,7 +215,7 @@ export default function AdminPanel() {
                 </div>
 
                 {/* Actions */}
-                {c.visitor_id && !banned && (
+                {c.visitor_id && !banned && info.name !== "D.L.L.Mconfessionable" && (
                   <div className="flex justify-end">
                     <Button
                       variant="destructive"
