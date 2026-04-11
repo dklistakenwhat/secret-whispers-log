@@ -79,6 +79,7 @@ export default function Index() {
             log out
           </button>
         </div>
+      </div>
 
       {/* Form */}
       <div className="mb-10">
