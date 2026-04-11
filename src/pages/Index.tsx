@@ -131,6 +131,7 @@ export default function Index() {
               confession={c}
               onLike={handleLike}
               isMine={c.visitor_id === visitor?.id}
+              liked={likedIds.has(c.id)}
             />
           ))}
         </div>
