@@ -60,8 +60,8 @@ export default function Index() {
     <div className="mx-auto min-h-screen max-w-3xl px-4 py-12 sm:px-6">
 {/* Header */}
       <div className="mb-10 text-center">
-        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary overflow-hidden">
-          <img src="/logo.png" alt="confessionable" className="h-8 w-8 object-contain" />
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full overflow-hidden shadow-lg border-2 border-primary/30">
+          <img src="/logo.png" alt="confessionable" className="h-16 w-16 object-cover rounded-full" />
         </div>
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
           confessionable
