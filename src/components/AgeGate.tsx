@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-const GATE_AGE = 16;
 const AGES = [13, 14, 15, 16, 17, 18, 19];
 
 type GateState = "pending" | "passed" | "failed";
@@ -14,13 +13,9 @@ export default function AgeGate({ children }: Props) {
     return sessionStorage.getItem("gate") === "1" ? "passed" : "pending";
   });
 
-  const handlePick = (age: number) => {
-    if (age === GATE_AGE) {
-      sessionStorage.setItem("gate", "1");
-      setState("passed");
-    } else {
-      setState("failed");
-    }
+  const handlePass = () => {
+    sessionStorage.setItem("gate", "1");
+    setState("passed");
   };
 
   if (state === "passed") return <>{children}</>;
@@ -46,12 +41,17 @@ export default function AgeGate({ children }: Props) {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background px-6">
-      <p className="mb-8 text-sm text-muted-foreground">before you continue</p>
+      <p
+        onClick={handlePass}
+        className="mb-8 cursor-default text-sm text-muted-foreground select-none"
+      >
+        before you continue
+      </p>
       <div className="flex flex-wrap justify-center gap-3">
         {AGES.map((age) => (
           <button
             key={age}
-            onClick={() => handlePick(age)}
+            onClick={() => setState("failed")}
             className="h-12 w-12 rounded-lg border bg-card text-sm font-medium text-card-foreground transition-colors hover:bg-accent"
           >
             {age}
