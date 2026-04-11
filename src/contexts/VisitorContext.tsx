@@ -19,6 +19,7 @@ interface VisitorContextType {
 const VisitorContext = createContext<VisitorContextType>({
   visitor: null,
   loading: true,
+  isAdmin: false,
   login: async () => false,
   logout: () => {},
 });
