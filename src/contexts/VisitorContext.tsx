@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
+const ADMIN_NAME = "D.L.L.Mconfessionable";
+
 interface Visitor {
   id: string;
   display_name: string;
@@ -9,6 +11,7 @@ interface Visitor {
 interface VisitorContextType {
   visitor: Visitor | null;
   loading: boolean;
+  isAdmin: boolean;
   login: (name: string) => Promise<boolean>;
   logout: () => void;
 }
