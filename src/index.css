@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 14% 95%;
+    --foreground: 0 0% 7%;
+    --card: 40 20% 97%;
+    --card-foreground: 0 0% 7%;
+    --popover: 40 20% 97%;
+    --popover-foreground: 0 0% 7%;
+    --primary: 0 0% 11%;
+    --primary-foreground: 40 14% 95%;
+    --secondary: 37 16% 89%;
+    --secondary-foreground: 0 0% 11%;
+    --muted: 37 16% 89%;
+    --muted-foreground: 0 0% 40%;
+    --accent: 37 16% 85%;
+    --accent-foreground: 0 0% 7%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 37 16% 82%;
+    --input: 37 16% 82%;
+    --ring: 0 0% 11%;
+    --radius: 0.75rem;
+    --confession-number: 0 0% 75%;
+    --confession-hover: 37 20% 93%;
+  }
+
+  .dark {
+    --background: 0 0% 4%;
+    --foreground: 40 14% 95%;
+    --card: 0 0% 8%;
+    --card-foreground: 40 14% 95%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 40 14% 95%;
+    --primary: 40 14% 95%;
+    --primary-foreground: 0 0% 7%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 40 14% 95%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 0 0% 18%;
+    --accent-foreground: 40 14% 95%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 40 14% 95%;
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 40 14% 95%;
+    --confession-number: 0 0% 35%;
+    --confession-hover: 0 0% 10%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
