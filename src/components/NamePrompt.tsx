@@ -10,8 +10,8 @@ export default function NamePrompt() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = name.trim();
-    if (!trimmed || trimmed.length > 20) {
-      setError("1-20 characters");
+    if (!trimmed || trimmed.length > 40) {
+      setError("1-40 characters");
       return;
     }
     setSubmitting(true);
@@ -34,7 +34,7 @@ export default function NamePrompt() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="e.g. AK, anon42..."
-          maxLength={20}
+          maxLength={40}
           autoFocus
           className="w-full rounded-lg border bg-card px-4 py-3 text-center text-sm text-card-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
         />
