@@ -6,6 +6,7 @@ export interface Confession {
   text: string;
   likes: number;
   created_at: string;
+  visitor_id?: string | null;
 }
 
 export async function getConfessions(): Promise<Confession[]> {
@@ -18,10 +19,13 @@ export async function getConfessions(): Promise<Confession[]> {
   return (data as Confession[]) ?? [];
 }
 
-export async function addConfession(text: string): Promise<Confession> {
+export async function addConfession(text: string, visitorId?: string): Promise<Confession> {
+  const row: Record<string, unknown> = { text };
+  if (visitorId) row.visitor_id = visitorId;
+
   const { data, error } = await supabase
     .from("confessions")
-    .insert({ text })
+    .insert(row)
     .select()
     .single();
 
