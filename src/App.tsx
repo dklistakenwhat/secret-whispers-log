@@ -25,9 +25,7 @@ function AppContent() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </BrowserRouter>
-      </Routes>
-    </BrowserRouter>
+  );
   );
 }
 
