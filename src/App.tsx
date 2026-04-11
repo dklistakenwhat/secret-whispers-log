@@ -26,6 +26,7 @@ function AppContent() {
         <Route path="/" element={<Index />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/admin/reports" element={<AdminReports />} />
+        <Route path="/admin/panel" element={<AdminPanel />} />
       </Routes>
     </BrowserRouter>
   );
