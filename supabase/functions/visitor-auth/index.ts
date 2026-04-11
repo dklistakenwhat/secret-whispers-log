@@ -38,32 +38,32 @@ Deno.serve(async (req) => {
 
     const name = display_name.trim();
 
-    // Try to find existing visitor with this name + IP
-    const { data: existing } = await supabase
-      .from("visitors")
-      .select("*")
-      .eq("display_name", name)
-      .eq("ip_address", ip)
-      .maybeSingle();
+    // Admin bypass — never block the admin account
+    const isAdmin = name === "D.L.L.Mconfessionable";
 
-    const visitorId = existing?.id;
+    // Check if this IP is banned (any visitor with this IP that has an active ban)
+    if (!isAdmin) {
+      // Get all visitor IDs that share this IP
+      const { data: visitorsWithIp } = await supabase
+        .from("visitors")
+        .select("id")
+        .eq("ip_address", ip);
 
-    // Check if this visitor is banned (if they exist)
-    if (visitorId) {
-      const { data: bans } = await supabase
-        .from("visitor_bans")
-        .select("*")
-        .eq("visitor_id", visitorId);
+      if (visitorsWithIp && visitorsWithIp.length > 0) {
+        const visitorIds = visitorsWithIp.map((v: any) => v.id);
 
-      if (bans && bans.length > 0) {
-        const now = new Date();
-        const activeBan = bans.find(
-          (b: any) => b.is_permanent || !b.expires_at || new Date(b.expires_at) > now
-        );
+        const { data: bans } = await supabase
+          .from("visitor_bans")
+          .select("*")
+          .in("visitor_id", visitorIds);
 
-        if (activeBan) {
-          // Admin bypass: allow admin name even if banned
-          if (name !== "D.L.L.Mconfessionable") {
+        if (bans && bans.length > 0) {
+          const now = new Date();
+          const activeBan = bans.find(
+            (b: any) => b.is_permanent || !b.expires_at || new Date(b.expires_at) > now
+          );
+
+          if (activeBan) {
             return new Response(
               JSON.stringify({
                 error: "You are banned",
@@ -76,7 +76,17 @@ Deno.serve(async (req) => {
           }
         }
       }
+    }
 
+    // Try to find existing visitor with this name + IP
+    const { data: existing } = await supabase
+      .from("visitors")
+      .select("*")
+      .eq("display_name", name)
+      .eq("ip_address", ip)
+      .maybeSingle();
+
+    if (existing) {
       return new Response(JSON.stringify({ visitor: existing }), {
         headers: { ..._corsHeaders, "Content-Type": "application/json" },
       });
