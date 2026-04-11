@@ -58,13 +58,13 @@ export default function Index() {
 
   return (
     <div className="mx-auto min-h-screen max-w-3xl px-4 py-12 sm:px-6">
-      {/* Header */}
+{/* Header */}
       <div className="mb-10 text-center">
-        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary">
-          <MessageSquare className="h-5 w-5 text-primary-foreground" />
+        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary overflow-hidden">
+          <img src="/logo.png" alt="confessionable" className="h-8 w-8 object-contain" />
         </div>
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          confessions
+          confessionable
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
           anonymous · numbered · unfiltered
