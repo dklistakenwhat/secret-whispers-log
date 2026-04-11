@@ -15,14 +15,19 @@ import { useVisitor } from "@/contexts/VisitorContext";
 export default function Index() {
   const { visitor, logout } = useVisitor();
   const [confessions, setConfessions] = useState<Confession[]>([]);
+  const [likedIds, setLikedIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
   const refresh = useCallback(async () => {
     const data = await getConfessions();
     setConfessions(data);
+    if (visitor) {
+      const likes = await getMyLikes(visitor.id);
+      setLikedIds(likes);
+    }
     setLoading(false);
-  }, []);
+  }, [visitor]);
 
   useEffect(() => {
     refresh();
@@ -34,7 +39,8 @@ export default function Index() {
   };
 
   const handleLike = async (id: string) => {
-    await likeConfession(id);
+    if (!visitor) return;
+    await toggleLikeConfession(id, visitor.id);
     refresh();
   };
 
