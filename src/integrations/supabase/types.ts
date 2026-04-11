@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      confession_likes: {
+        Row: {
+          confession_id: string
+          created_at: string
+          id: string
+          visitor_id: string
+        }
+        Insert: {
+          confession_id: string
+          created_at?: string
+          id?: string
+          visitor_id: string
+        }
+        Update: {
+          confession_id?: string
+          created_at?: string
+          id?: string
+          visitor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "confession_likes_confession_id_fkey"
+            columns: ["confession_id"]
+            isOneToOne: false
+            referencedRelation: "confessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "confession_likes_visitor_id_fkey"
+            columns: ["visitor_id"]
+            isOneToOne: false
+            referencedRelation: "visitors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       confessions: {
         Row: {
           confession_number: number
@@ -78,7 +114,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      toggle_like: {
+        Args: { p_confession_id: string; p_visitor_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
