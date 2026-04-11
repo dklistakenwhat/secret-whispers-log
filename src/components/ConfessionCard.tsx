@@ -6,6 +6,7 @@ interface Props {
   confession: Confession;
   onLike: (id: string) => void;
   isMine?: boolean;
+  liked?: boolean;
 }
 
 export default function ConfessionCard({ confession, onLike, isMine }: Props) {

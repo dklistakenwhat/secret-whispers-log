@@ -69,19 +69,20 @@ export async function toggleHideConfession(id: string, hidden: boolean): Promise
   if (error) throw error;
 }
 
-export async function likeConfession(id: string): Promise<void> {
-  const { data: current, error: fetchErr } = await supabase
-    .from("confessions")
-    .select("likes")
-    .eq("id", id)
-    .single();
-
-  if (fetchErr) throw fetchErr;
-
-  const { error } = await supabase
-    .from("confessions")
-    .update({ likes: (current?.likes ?? 0) + 1 })
-    .eq("id", id);
-
+export async function toggleLikeConfession(confessionId: string, visitorId: string): Promise<boolean> {
+  const { data, error } = await supabase.rpc("toggle_like", {
+    p_confession_id: confessionId,
+    p_visitor_id: visitorId,
+  });
   if (error) throw error;
+  return data as boolean; // true = liked, false = unliked
+}
+
+export async function getMyLikes(visitorId: string): Promise<Set<string>> {
+  const { data, error } = await supabase
+    .from("confession_likes")
+    .select("confession_id")
+    .eq("visitor_id", visitorId);
+  if (error) throw error;
+  return new Set((data ?? []).map((r: any) => r.confession_id));
 }

@@ -6,7 +6,8 @@ import ConfessionCard from "@/components/ConfessionCard";
 import {
   getConfessions,
   addConfession,
-  likeConfession,
+  toggleLikeConfession,
+  getMyLikes,
   Confession,
 } from "@/lib/confessions";
 import { useVisitor } from "@/contexts/VisitorContext";
