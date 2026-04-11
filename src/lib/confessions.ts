@@ -7,12 +7,27 @@ export interface Confession {
   likes: number;
   created_at: string;
   visitor_id?: string | null;
+  hidden?: boolean;
 }
 
+/** Public feed: only non-hidden confessions */
 export async function getConfessions(): Promise<Confession[]> {
   const { data, error } = await supabase
     .from("confessions")
     .select("*")
+    .eq("hidden", false)
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+  return (data as Confession[]) ?? [];
+}
+
+/** Dashboard: all confessions by a specific visitor (including hidden) */
+export async function getMyConfessions(visitorId: string): Promise<Confession[]> {
+  const { data, error } = await supabase
+    .from("confessions")
+    .select("*")
+    .eq("visitor_id", visitorId)
     .order("created_at", { ascending: false });
 
   if (error) throw error;
@@ -30,8 +45,31 @@ export async function addConfession(text: string, visitorId?: string): Promise<C
   return data as Confession;
 }
 
+export async function editConfession(id: string, text: string): Promise<void> {
+  const { error } = await supabase
+    .from("confessions")
+    .update({ text })
+    .eq("id", id);
+  if (error) throw error;
+}
+
+export async function deleteConfession(id: string): Promise<void> {
+  const { error } = await supabase
+    .from("confessions")
+    .delete()
+    .eq("id", id);
+  if (error) throw error;
+}
+
+export async function toggleHideConfession(id: string, hidden: boolean): Promise<void> {
+  const { error } = await supabase
+    .from("confessions")
+    .update({ hidden })
+    .eq("id", id);
+  if (error) throw error;
+}
+
 export async function likeConfession(id: string): Promise<void> {
-  // Fetch current likes then increment
   const { data: current, error: fetchErr } = await supabase
     .from("confessions")
     .select("likes")
