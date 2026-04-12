@@ -129,9 +129,7 @@ export default function OnboardingFlow({
         )}
       </AnimatePresence>
 
-      {step !== "done" && (
-        <ProgressDots current={stepIndex} total={totalSteps} />
-      )}
+      <ProgressDots current={stepIndex} total={4} />
     </>
   );
 }
