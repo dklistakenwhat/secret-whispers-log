@@ -1,24 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const AGES = [13, 14, 15, 16, 17, 18, 19];
 
 type GateState = "pending" | "passed" | "failed";
 
 interface Props {
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  onPass?: () => void;
 }
 
-export default function AgeGate({ children }: Props) {
-  const [state, setState] = useState<GateState>(() => {
-    return sessionStorage.getItem("gate") === "1" ? "passed" : "pending";
-  });
+export default function AgeGate({ children, onPass }: Props) {
+  const alreadyPassed = sessionStorage.getItem("gate") === "1";
+  const [state, setState] = useState<GateState>(alreadyPassed ? "passed" : "pending");
+
+  useEffect(() => {
+    if (alreadyPassed && onPass) onPass();
+  }, []);
 
   const handlePass = () => {
     sessionStorage.setItem("gate", "1");
     setState("passed");
+    onPass?.();
   };
 
-  if (state === "passed") return <>{children}</>;
+  if (state === "passed") return children ? <>{children}</> : null;
 
   if (state === "failed") {
     return (
