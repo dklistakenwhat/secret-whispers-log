@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { useVisitor } from "@/contexts/VisitorContext";
 
 export default function NamePrompt() {
@@ -7,6 +8,7 @@ export default function NamePrompt() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,13 +54,22 @@ export default function NamePrompt() {
           autoFocus
           className="w-full rounded-lg border bg-card px-4 py-3 text-center text-sm text-card-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
         />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="password (min 4 chars)"
-          className="mt-3 w-full rounded-lg border bg-card px-4 py-3 text-center text-sm text-card-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
-        />
+        <div className="relative mt-3">
+          <input
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="password (min 4 chars)"
+            className="w-full rounded-lg border bg-card px-4 py-3 text-center text-sm text-card-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring pr-10"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((s) => !s)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+          >
+            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          </button>
+        </div>
         {error && (
           <p className="mt-2 text-xs text-destructive">{error}</p>
         )}
