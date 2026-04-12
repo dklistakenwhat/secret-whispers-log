@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-const ADMIN_NAME = "D.L.L.Mconfessionable";
+const ADMIN_NAME = "Admin";
 
 interface Visitor {
   id: string;

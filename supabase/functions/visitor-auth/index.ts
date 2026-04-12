@@ -52,7 +52,7 @@ Deno.serve(async (req) => {
     }
 
     const name = display_name.trim();
-    const isAdmin = name === "D.L.L.Mconfessionable";
+    const isAdmin = name === "Admin";
 
     // Check if this IP is banned
     if (!isAdmin) {
