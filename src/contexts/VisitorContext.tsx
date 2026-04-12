@@ -67,6 +67,11 @@ export function VisitorProvider({ children }: { children: ReactNode }) {
           is_permanent: response.data.is_permanent,
         };
       }
+
+      // Check for wrong password (401)
+      if (response.data?.error === "Wrong password for this name.") {
+        return { success: false, wrongPassword: true };
+      }
       
       if (response.error || !response.data?.visitor) return { success: false };
       const v = { id: response.data.visitor.id, display_name: response.data.visitor.display_name };
