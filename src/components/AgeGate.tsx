@@ -13,10 +13,9 @@ export default function AgeGate({ children, onPass }: Props) {
   const alreadyPassed = sessionStorage.getItem("gate") === "1";
   const [state, setState] = useState<GateState>(alreadyPassed ? "passed" : "pending");
 
-  // If already passed on mount and used with onPass callback, fire it
-  useState(() => {
+  useEffect(() => {
     if (alreadyPassed && onPass) onPass();
-  });
+  }, []);
 
   const handlePass = () => {
     sessionStorage.setItem("gate", "1");
