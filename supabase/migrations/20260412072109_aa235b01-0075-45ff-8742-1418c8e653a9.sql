@@ -1,0 +1,1 @@
+ALTER TABLE public.visitors ADD COLUMN password_hash text;

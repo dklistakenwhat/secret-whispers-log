@@ -1,10 +1,18 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
+import { encode as hexEncode } from "https://deno.land/std@0.208.0/encoding/hex.ts";
 
 const _corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type",
 };
+
+async function hashPassword(password: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  return new TextDecoder().decode(hexEncode(new Uint8Array(hashBuffer)));
+}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -22,7 +30,7 @@ Deno.serve(async (req) => {
       req.headers.get("cf-connecting-ip") ||
       "unknown";
 
-    const { display_name } = await req.json();
+    const { display_name, password } = await req.json();
 
     if (
       !display_name ||
@@ -36,14 +44,18 @@ Deno.serve(async (req) => {
       );
     }
 
-    const name = display_name.trim();
+    if (!password || typeof password !== "string" || password.length < 4) {
+      return new Response(
+        JSON.stringify({ error: "Password must be at least 4 characters" }),
+        { status: 400, headers: { ..._corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
 
-    // Admin bypass — never block the admin account
+    const name = display_name.trim();
     const isAdmin = name === "D.L.L.Mconfessionable";
 
-    // Check if this IP is banned (any visitor with this IP that has an active ban)
+    // Check if this IP is banned
     if (!isAdmin) {
-      // Get all visitor IDs that share this IP
       const { data: visitorsWithIp } = await supabase
         .from("visitors")
         .select("id")
@@ -78,24 +90,46 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Try to find existing visitor with this name + IP
-    const { data: existing } = await supabase
+    const pwHash = await hashPassword(password);
+
+    // Check if a visitor with this name already exists (any IP)
+    const { data: existingByName } = await supabase
       .from("visitors")
       .select("*")
       .eq("display_name", name)
-      .eq("ip_address", ip)
+      .limit(1)
       .maybeSingle();
 
-    if (existing) {
-      return new Response(JSON.stringify({ visitor: existing }), {
+    if (existingByName) {
+      // Verify password
+      if (existingByName.password_hash && existingByName.password_hash !== pwHash) {
+        return new Response(
+          JSON.stringify({ error: "Wrong password for this name." }),
+          { status: 401, headers: { ..._corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      // If old account has no password, set it now
+      if (!existingByName.password_hash) {
+        await supabase
+          .from("visitors")
+          .update({ password_hash: pwHash, ip_address: ip })
+          .eq("id", existingByName.id);
+      } else {
+        // Update IP on successful login
+        await supabase
+          .from("visitors")
+          .update({ ip_address: ip })
+          .eq("id", existingByName.id);
+      }
+      return new Response(JSON.stringify({ visitor: existingByName }), {
         headers: { ..._corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    // Create new visitor
+    // Create new visitor with password
     const { data: newVisitor, error } = await supabase
       .from("visitors")
-      .insert({ display_name: name, ip_address: ip })
+      .insert({ display_name: name, ip_address: ip, password_hash: pwHash })
       .select()
       .single();
 

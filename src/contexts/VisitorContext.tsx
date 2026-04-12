@@ -11,6 +11,7 @@ interface Visitor {
 interface LoginResult {
   success: boolean;
   banned?: boolean;
+  wrongPassword?: boolean;
   reason?: string;
   expires_at?: string;
   is_permanent?: boolean;
@@ -20,7 +21,7 @@ interface VisitorContextType {
   visitor: Visitor | null;
   loading: boolean;
   isAdmin: boolean;
-  login: (name: string) => Promise<LoginResult>;
+  login: (name: string, password: string) => Promise<LoginResult>;
   logout: () => void;
 }
 
@@ -28,7 +29,7 @@ const VisitorContext = createContext<VisitorContextType>({
   visitor: null,
   loading: true,
   isAdmin: false,
-  login: async () => ({ success: false }),
+  login: async (_n: string, _p: string) => ({ success: false }),
   logout: () => {},
 });
 
@@ -50,10 +51,10 @@ export function VisitorProvider({ children }: { children: ReactNode }) {
     setLoading(false);
   }, []);
 
-  const login = async (name: string): Promise<LoginResult> => {
+  const login = async (name: string, password: string): Promise<LoginResult> => {
     try {
       const response = await supabase.functions.invoke("visitor-auth", {
-        body: { display_name: name },
+        body: { display_name: name, password },
       });
       
       // Check for ban (403)
@@ -65,6 +66,11 @@ export function VisitorProvider({ children }: { children: ReactNode }) {
           expires_at: response.data.expires_at,
           is_permanent: response.data.is_permanent,
         };
+      }
+
+      // Check for wrong password (401)
+      if (response.data?.error === "Wrong password for this name.") {
+        return { success: false, wrongPassword: true };
       }
       
       if (response.error || !response.data?.visitor) return { success: false };
