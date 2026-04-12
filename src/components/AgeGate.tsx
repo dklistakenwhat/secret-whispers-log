@@ -27,17 +27,8 @@ export default function AgeGate({ children, onPass }: Props) {
 
   if (state === "failed") {
     return (
-      <div
-        style={{
-          minHeight: "100vh",
-          backgroundColor: "#f1f1f1",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontFamily: "system-ui, sans-serif",
-        }}
-      >
-        <p style={{ color: "#999", fontSize: "13px" }}>
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <p className="text-sm text-muted-foreground">
           Something went wrong. Please try again later.
         </p>
       </div>
