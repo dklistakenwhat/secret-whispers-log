@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      comments: {
+        Row: {
+          confession_id: string
+          created_at: string
+          id: string
+          text: string
+          visitor_id: string
+        }
+        Insert: {
+          confession_id: string
+          created_at?: string
+          id?: string
+          text: string
+          visitor_id: string
+        }
+        Update: {
+          confession_id?: string
+          created_at?: string
+          id?: string
+          text?: string
+          visitor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comments_confession_id_fkey"
+            columns: ["confession_id"]
+            isOneToOne: false
+            referencedRelation: "confessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comments_visitor_id_fkey"
+            columns: ["visitor_id"]
+            isOneToOne: false
+            referencedRelation: "visitors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       confession_likes: {
         Row: {
           confession_id: string
@@ -50,6 +89,45 @@ export type Database = {
           },
         ]
       }
+      confession_reactions: {
+        Row: {
+          confession_id: string
+          created_at: string
+          emoji: string
+          id: string
+          visitor_id: string
+        }
+        Insert: {
+          confession_id: string
+          created_at?: string
+          emoji: string
+          id?: string
+          visitor_id: string
+        }
+        Update: {
+          confession_id?: string
+          created_at?: string
+          emoji?: string
+          id?: string
+          visitor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "confession_reactions_confession_id_fkey"
+            columns: ["confession_id"]
+            isOneToOne: false
+            referencedRelation: "confessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "confession_reactions_visitor_id_fkey"
+            columns: ["visitor_id"]
+            isOneToOne: false
+            referencedRelation: "visitors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       confessions: {
         Row: {
           confession_number: number
@@ -57,6 +135,7 @@ export type Database = {
           hidden: boolean
           id: string
           likes: number
+          mood_tag: string | null
           text: string
           visitor_id: string | null
         }
@@ -66,6 +145,7 @@ export type Database = {
           hidden?: boolean
           id?: string
           likes?: number
+          mood_tag?: string | null
           text: string
           visitor_id?: string | null
         }
@@ -75,6 +155,7 @@ export type Database = {
           hidden?: boolean
           id?: string
           likes?: number
+          mood_tag?: string | null
           text?: string
           visitor_id?: string | null
         }
