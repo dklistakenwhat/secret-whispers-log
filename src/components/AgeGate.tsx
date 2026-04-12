@@ -10,8 +10,12 @@ interface Props {
 }
 
 export default function AgeGate({ children, onPass }: Props) {
-  const [state, setState] = useState<GateState>(() => {
-    return sessionStorage.getItem("gate") === "1" ? "passed" : "pending";
+  const alreadyPassed = sessionStorage.getItem("gate") === "1";
+  const [state, setState] = useState<GateState>(alreadyPassed ? "passed" : "pending");
+
+  // If already passed on mount and used with onPass callback, fire it
+  useState(() => {
+    if (alreadyPassed && onPass) onPass();
   });
 
   const handlePass = () => {
