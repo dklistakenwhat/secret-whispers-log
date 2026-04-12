@@ -187,18 +187,21 @@ export type Database = {
           display_name: string
           id: string
           ip_address: string
+          password_hash: string | null
         }
         Insert: {
           created_at?: string
           display_name: string
           id?: string
           ip_address: string
+          password_hash?: string | null
         }
         Update: {
           created_at?: string
           display_name?: string
           id?: string
           ip_address?: string
+          password_hash?: string | null
         }
         Relationships: []
       }
