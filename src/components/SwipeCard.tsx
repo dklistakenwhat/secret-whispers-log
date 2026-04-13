@@ -101,13 +101,13 @@ export default function SwipeCard({
       {/* Trending */}
       {isTrending && (
         <div className="absolute top-16 right-5 flex items-center gap-1 text-orange-400/60">
-          <Flame className="h-5 w-5" />
+          <Flame className="h-5 w-5 my-[50px]" />
         </div>
       )}
 
       {/* Number */}
       <div className="absolute top-16 left-5">
-        <span className="text-xs font-medium text-muted-foreground/60">#{displayNumber}</span>
+        <span className="text-xs font-medium text-muted-foreground/60 mx-0 py-0 mb-0 text-left my-[10px]">{"\n"}#{displayNumber}</span>
       </div>
 
       {/* Mood tag */}
