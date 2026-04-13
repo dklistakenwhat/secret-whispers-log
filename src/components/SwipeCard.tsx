@@ -92,34 +92,32 @@ export default function SwipeCard({
     >
       <MoodEffects mood={mood} />
 
-      {/* Heart burst particles */}
       <ReactionParticles emoji="❤️" trigger={heartBurst} />
       {reactionBurst.emoji && (
         <ReactionParticles emoji={reactionBurst.emoji} trigger={reactionBurst.count} />
       )}
 
-      {/* Trending */}
-      {isTrending && (
-        <div className="absolute top-16 right-5 flex items-center gap-1 text-orange-400/60">
-          <Flame className="h-5 w-5 my-[50px]" />
-        </div>
-      )}
-
-      {/* Number */}
-      <div className="absolute top-16 left-5">
-        <span className="text-xs font-medium text-muted-foreground/60 mx-0 py-0 mb-0 text-left my-[10px]">{"\n"}#{displayNumber}</span>
+      {/* Top info row */}
+      <div className="absolute top-20 left-5 right-5 flex items-center justify-between">
+        <span className="text-xs font-medium text-muted-foreground/60">#{displayNumber}</span>
+        {isTrending && (
+          <div className="flex items-center gap-1 text-orange-400/60">
+            <Flame className="h-4 w-4" />
+            <span className="text-[10px]">trending</span>
+          </div>
+        )}
       </div>
 
       {/* Mood tag */}
       {mood && (
-        <div className="absolute top-16 left-1/2 -translate-x-1/2">
+        <div className="absolute top-20 left-1/2 -translate-x-1/2">
           <span className="text-lg">{mood}</span>
         </div>
       )}
 
       {/* Confession text */}
-      <div className="max-w-[85%] px-6">
-        <p className="text-center text-xl font-light leading-relaxed text-foreground/90 sm:text-2xl">
+      <div className="max-w-[85%] px-4 sm:px-6">
+        <p className="text-center text-lg font-light leading-relaxed text-foreground/90 sm:text-2xl">
           {confession.text}
         </p>
         <p className="mt-4 text-center text-xs text-muted-foreground/50">
@@ -151,7 +149,7 @@ export default function SwipeCard({
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.6, opacity: 0, y: 20 }}
             transition={{ type: "spring", damping: 20, stiffness: 300 }}
-            className="absolute bottom-40 left-1/2 -translate-x-1/2 glass rounded-full px-3 py-2 flex items-center gap-1"
+            className="absolute bottom-36 sm:bottom-40 left-1/2 -translate-x-1/2 glass rounded-full px-3 py-2 flex items-center gap-1"
           >
             {REACTION_EMOJIS.map((emoji) => (
               <motion.button
@@ -161,7 +159,7 @@ export default function SwipeCard({
                   e.stopPropagation();
                   handleReaction(emoji);
                 }}
-                className={`rounded-full px-2.5 py-1.5 text-xl transition-transform ${
+                className={`rounded-full px-2 py-1.5 text-lg sm:text-xl transition-transform ${
                   myReactions.has(emoji) ? "bg-secondary" : ""
                 }`}
               >
@@ -173,14 +171,14 @@ export default function SwipeCard({
       </AnimatePresence>
 
       {/* Bottom bar */}
-      <div className="absolute bottom-20 left-0 right-0 flex items-end justify-between px-6">
+      <div className="absolute bottom-16 sm:bottom-20 left-0 right-0 flex items-end justify-between px-5 sm:px-6">
         <div className="flex flex-wrap gap-1.5">
           {REACTION_EMOJIS.filter((e) => reactionCounts.has(e)).map((emoji) => (
             <motion.button
               key={emoji}
               whileTap={{ scale: 1.3 }}
               onClick={() => handleReaction(emoji)}
-              className={`glass-light flex items-center gap-1 rounded-full px-2.5 py-1 text-xs transition-all ${
+              className={`glass-light flex items-center gap-1 rounded-full px-2 py-1 text-xs transition-all ${
                 myReactions.has(emoji) ? "ring-1 ring-foreground/20" : ""
               }`}
             >

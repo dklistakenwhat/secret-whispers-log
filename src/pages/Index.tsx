@@ -114,25 +114,21 @@ export default function Index() {
     });
   }, [soundEnabled]);
 
-  // Drag end handler
   const handleDragEnd = useCallback((_: any, info: PanInfo) => {
     const { offset, velocity } = info;
     const swipeY = Math.abs(offset.y);
     const swipeX = Math.abs(offset.x);
 
-    // Horizontal swipe left = skip
     if (swipeX > swipeY && offset.x < -SWIPE_THRESHOLD) {
       goNext();
       return;
     }
-    // Vertical swipe
     if (swipeY > SWIPE_THRESHOLD || Math.abs(velocity.y) > 300) {
       if (offset.y < 0) goNext();
       else goPrev();
     }
   }, [goNext, goPrev]);
 
-  // Mouse wheel for desktop
   const wheelTimeout = useRef<NodeJS.Timeout | null>(null);
   const handleWheel = useCallback((e: WheelEvent) => {
     if (composeOpen || commentsOpen) return;
@@ -216,8 +212,8 @@ export default function Index() {
         <motion.div className="h-full bg-foreground/30" animate={{ width: `${progress * 100}%` }} transition={{ duration: 0.3 }} />
       </div>
 
-      {/* Top buttons */}
-      <div className="absolute top-12 left-5 z-30 items-center gap-2 flex flex-row text-center mx-[40px] my-[20px]">
+      {/* Top buttons - safe area aware */}
+      <div className="absolute top-4 sm:top-6 left-4 sm:left-5 z-30 flex items-center gap-2">
         <button onClick={() => navigate("/")} className="glass rounded-full p-2">
           <Home className="h-4 w-4 text-foreground/60" />
         </button>
@@ -229,7 +225,7 @@ export default function Index() {
         </button>
       </div>
 
-      <button onClick={() => setShowNav((s) => !s)} className="absolute top-12 right-5 z-30 glass rounded-full p-2 my-[10px] mx-[33px]">
+      <button onClick={() => setShowNav((s) => !s)} className="absolute top-4 sm:top-6 right-4 sm:right-5 z-30 glass rounded-full p-2">
         <User className="h-4 w-4 text-foreground/60" />
       </button>
 
@@ -240,7 +236,7 @@ export default function Index() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute top-24 left-5 z-40 glass rounded-2xl p-3 min-w-[160px]"
+            className="absolute top-16 sm:top-20 left-4 sm:left-5 z-40 glass rounded-2xl p-3 min-w-[160px]"
           >
             {THEMES.map((t) => (
               <button
@@ -265,7 +261,7 @@ export default function Index() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute top-24 right-5 z-30 glass rounded-2xl p-3 min-w-[160px]"
+            className="absolute top-16 sm:top-20 right-4 sm:right-5 z-30 glass rounded-2xl p-3 min-w-[160px]"
           >
             <Link to="/dashboard" className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-xs text-foreground/80 hover:bg-secondary" onClick={() => setShowNav(false)}>
               <User className="h-3.5 w-3.5" /> my confessions
@@ -344,7 +340,7 @@ export default function Index() {
       <motion.button
         onClick={() => setComposeOpen(true)}
         whileTap={{ scale: 0.9 }}
-        className="fixed bottom-8 right-6 z-40 glass h-14 w-14 rounded-full shadow-lg shadow-black/20 ring-1 ring-foreground/10 flex-row flex items-center justify-center mx-[55px]"
+        className="fixed bottom-6 sm:bottom-8 right-5 sm:right-6 z-40 glass h-14 w-14 rounded-full shadow-lg shadow-black/20 ring-1 ring-foreground/10 flex items-center justify-center"
       >
         <Pencil className="h-5 w-5 text-foreground" />
       </motion.button>
