@@ -217,7 +217,7 @@ export default function Index() {
       </div>
 
       {/* Top buttons */}
-      <div className="absolute top-12 left-5 z-30 flex items-center gap-2">
+      <div className="absolute top-12 left-5 z-30 items-center gap-2 flex flex-row text-center mx-[40px] my-[20px]">
         <button onClick={() => navigate("/")} className="glass rounded-full p-2">
           <Home className="h-4 w-4 text-foreground/60" />
         </button>
@@ -229,7 +229,7 @@ export default function Index() {
         </button>
       </div>
 
-      <button onClick={() => setShowNav((s) => !s)} className="absolute top-12 right-5 z-30 glass rounded-full p-2">
+      <button onClick={() => setShowNav((s) => !s)} className="absolute top-12 right-5 z-30 glass rounded-full p-2 my-[10px] mx-[33px]">
         <User className="h-4 w-4 text-foreground/60" />
       </button>
 
@@ -344,7 +344,7 @@ export default function Index() {
       <motion.button
         onClick={() => setComposeOpen(true)}
         whileTap={{ scale: 0.9 }}
-        className="fixed bottom-8 right-6 z-40 glass flex h-14 w-14 items-center justify-center rounded-full shadow-lg shadow-black/20 ring-1 ring-foreground/10"
+        className="fixed bottom-8 right-6 z-40 glass h-14 w-14 rounded-full shadow-lg shadow-black/20 ring-1 ring-foreground/10 flex-row flex items-center justify-center mx-[55px]"
       >
         <Pencil className="h-5 w-5 text-foreground" />
       </motion.button>
