@@ -313,7 +313,7 @@ export default function Index() {
               commentCount={commentCounts.get(current.confession.id) || 0}
               isTrending={current.score >= trendingThreshold && ranked.length >= 3}
               onDoubleTap={handleDoubleTap}
-              onHold={openComments}
+              onOpenComments={openComments}
               onReaction={handleReaction}
               myReactions={myReactionsForCurrent}
             />

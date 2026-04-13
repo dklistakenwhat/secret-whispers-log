@@ -91,7 +91,7 @@
 
 .mood-sad { animation: edge-pulse 3s ease-in-out infinite; }
 .mood-angry { animation: edge-pulse 2s ease-in-out infinite; }
-.mood-moon { animation: frost-clear 8s ease-out forwards; }
+.mood-moon { animation: frost-clear 2s ease-out forwards; }
 .mood-skull { animation: glitch-flicker 4s ease-in-out infinite; }
 
 /* iOS-style glass effect */
