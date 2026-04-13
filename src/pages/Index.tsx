@@ -340,7 +340,7 @@ export default function Index() {
       <motion.button
         onClick={() => setComposeOpen(true)}
         whileTap={{ scale: 0.9 }}
-        className="fixed bottom-6 sm:bottom-8 right-5 sm:right-6 z-40 glass h-14 w-14 rounded-full shadow-lg shadow-black/20 ring-1 ring-foreground/10 flex items-center justify-center"
+        className="fixed bottom-6 sm:bottom-8 right-5 sm:right-6 z-40 glass h-14 w-14 rounded-full shadow-lg shadow-black/20 ring-1 ring-foreground/10 flex items-center justify-center mx-[50px]"
       >
         <Pencil className="h-5 w-5 text-foreground" />
       </motion.button>
